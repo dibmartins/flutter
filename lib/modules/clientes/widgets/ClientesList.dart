@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/modules/clientes/models/Cliente.dart';
+import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
 
 class ClientesList extends StatefulWidget {
 

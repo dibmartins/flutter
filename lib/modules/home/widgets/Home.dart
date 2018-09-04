@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:app/modules/home/widgets/Grafico1.dart';
-import 'package:app/modules/home/widgets/Grafico2.dart';
-import 'package:app/modules/home/widgets/Grafico3.dart';
-import 'package:app/modules/clientes/widgets/ClientesList.dart';
+import 'package:forca_vendas/modules/home/widgets/Grafico1.dart';
+import 'package:forca_vendas/modules/home/widgets/Grafico2.dart';
+import 'package:forca_vendas/modules/home/widgets/Grafico3.dart';
+import 'package:forca_vendas/modules/clientes/widgets/ClientesList.dart';
 
 class Home extends StatefulWidget {
   

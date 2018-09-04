@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/modules/clientes/models/Cliente.dart';
-import 'package:app/modules/home/widgets/Home.dart';
+import 'package:forca_vendas/modules/home/widgets/Home.dart';
 
 class App extends StatelessWidget {
 
@@ -9,7 +8,7 @@ class App extends StatelessWidget {
 
         return new MaterialApp(
             
-            title : 'Prosimples',
+            title : 'Força de Vendas',
             theme : new ThemeData(primarySwatch: Colors.blue),
             home  : new Home(),
         );
