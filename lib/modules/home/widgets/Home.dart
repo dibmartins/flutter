@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                         ),
 
                         ListTile(
-                            
+                            leading: const Icon(Icons.shopping_cart),
                             title: Text('Vendas'),
                             
                             onTap: () {
@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
                         ),
                         
                         ListTile(
-                            
+                            leading: const Icon(Icons.build),
                             title: Text('Ordens de serviço'),
                             
                             onTap: () {
@@ -102,19 +102,13 @@ class _HomeState extends State<Home> {
 
                         ExpansionTile(
                             
+                            leading: const Icon(Icons.style),
                             title: Text("Cadastros"),
                             
                             children: <Widget>[
                                 
                                 ListTile(
-                                    title: Text('Produtos'),
-                                    onTap: () {
-                                        
-                                        Navigator.pop(context);
-                                    },
-                                ),
-                                
-                                ListTile(
+                                    leading: const Icon(Icons.person),
                                     title: Text('Clientes'),
                                     onTap: () {
                                         
@@ -124,8 +118,18 @@ class _HomeState extends State<Home> {
                                 ),
                                 
                                 ListTile(
+                                    leading: const Icon(Icons.local_shipping),
                                     title: Text('Fornecedores'),
                                     onTap: () {
+                                        Navigator.pop(context);
+                                    },
+                                ),
+
+                                ListTile(
+                                    leading: const Icon(Icons.widgets),
+                                    title: Text('Produtos'),
+                                    onTap: () {
+                                        
                                         Navigator.pop(context);
                                     },
                                 ),
