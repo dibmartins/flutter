@@ -75,11 +75,17 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.zero,
                     
                     children: <Widget>[
-                        
-                        DrawerHeader(
-                            child      : Text('Acme Ltda.', 
-                            style      : new TextStyle(fontSize: 13.0, color: Colors.white)),
+
+                        new UserAccountsDrawerHeader(
                             decoration : BoxDecoration(color: Colors.blue),
+                            accountName: new Text('Diego Botelho'),
+                            accountEmail: new Text('dibmartins@gmail.com'),
+                            currentAccountPicture: new GestureDetector(
+                                onTap: () => print('Toque na imagem'),
+                                child: new CircleAvatar(
+                                    backgroundImage: new NetworkImage('https://www.w3schools.com/howto/img_avatar.png'),
+                                )
+                            )
                         ),
 
                         ListTile(
@@ -92,8 +98,8 @@ class _HomeState extends State<Home> {
                         ),
                         
                         ListTile(
-                            leading: const Icon(Icons.build),
-                            title: Text('Ordens de serviço'),
+                            leading: const Icon(Icons.restaurant),
+                            title: Text('Despesas'),
                             
                             onTap: () {
                                 Navigator.pop(context);
