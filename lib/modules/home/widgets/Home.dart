@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
                         
                         DrawerHeader(
-                            child      : Text('G2 E SÁ SOLUÇÕES EM INFORMÁTICA LTDA', 
+                            child      : Text('Acme Ltda.', 
                             style      : new TextStyle(fontSize: 13.0, color: Colors.white)),
                             decoration : BoxDecoration(color: Colors.blue),
                         ),
