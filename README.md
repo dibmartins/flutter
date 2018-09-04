@@ -1,6 +1,6 @@
-# app
+# Força de vendas
 
-A new Flutter project.
+Meu aprendizado de Flutter.
 
 ## Getting Started
 
