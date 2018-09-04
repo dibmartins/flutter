@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config=":sqflite"><source path="/home/diego/development/pipegrid/app/build/sqflite/intermediates/packagedAssets/debug"/></dataSet><dataSet config="main"><source path="/home/diego/development/pipegrid/app/android/app/src/main/assets"/><source path="/home/diego/development/pipegrid/app/build/app/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/home/diego/development/pipegrid/app/android/app/src/debug/assets"/></dataSet></merger>
