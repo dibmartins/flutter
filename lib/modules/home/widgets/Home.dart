@@ -77,7 +77,13 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
 
                         new UserAccountsDrawerHeader(
-                            decoration : BoxDecoration(color: Colors.blue),
+                            decoration : BoxDecoration(
+                                image: new DecorationImage(
+                                    image: new NetworkImage('https://wallpaperstudio10.com/static/wpdb/wallpapers/3840x2160/170468.jpg'),
+                                    fit: BoxFit.cover
+                                ),
+                                color: Colors.blue,
+                            ),
                             accountName: new Text('Diego Botelho'),
                             accountEmail: new Text('dibmartins@gmail.com'),
                             currentAccountPicture: new GestureDetector(
