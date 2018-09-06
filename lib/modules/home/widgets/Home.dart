@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forca_vendas/modules/home/widgets/Grafico1.dart';
 import 'package:forca_vendas/modules/home/widgets/Grafico2.dart';
 import 'package:forca_vendas/modules/home/widgets/Grafico3.dart';
-import 'package:forca_vendas/modules/clientes/widgets/ClientesList.dart';
+import 'package:forca_vendas/modules/clientes/widgets/Listar.dart';
 
 class Home extends StatefulWidget {
   
@@ -124,7 +124,7 @@ class _HomeState extends State<Home> {
                                     title: Text('Clientes'),
                                     onTap: () {
                                         
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ClientesList()));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Listar()));
 
                                     },
                                 ),

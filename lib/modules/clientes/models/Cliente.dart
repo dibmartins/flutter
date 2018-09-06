@@ -35,4 +35,11 @@ class Cliente {
         this._nome  = map['nome'];
         this._email = map['email'];
     }
+
+    Cliente.fromJson(Map<String, dynamic> json){
+        
+        this._id    = json['id'];
+        this._nome  = json['nome'];
+        this._email = json['email'];
+    }
 }
