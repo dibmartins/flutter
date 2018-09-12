@@ -39,7 +39,7 @@ class Cliente {
     Cliente.fromJson(Map<String, dynamic> json){
         
         this._id    = json['id'];
-        this._nome  = json['nome'];
+        this._nome  = json['name'];
         this._email = json['email'];
     }
 }

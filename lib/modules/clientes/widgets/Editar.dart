@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
-import 'package:dio/dio.dart';
 
 class Editar extends StatefulWidget {
 
@@ -14,18 +14,13 @@ class Editar extends StatefulWidget {
 
 class _EditarState extends State<Editar> {
 
-    void _load() async {
-
-        Dio dio = new Dio();
-        
-        Response response = await dio.get('https://swapi.co/api/people');
-        
-        print(response.data['results']);
-    }
+    final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+    
+    List<String> _colors = <String> ['', 'red', 'green', 'blue', 'orange'];
+    
+    String _color = '';
 
     void _save() {
-
-        _load();
 
         AlertDialog alert = new AlertDialog(
             
@@ -42,7 +37,7 @@ class _EditarState extends State<Editar> {
         return Scaffold(
             
             appBar: AppBar(
-                title: new Text('Adicionar cliente'),
+                title: new Text('Novo cliente'),
                 actions: <Widget>[
 
                     IconButton(
@@ -52,7 +47,62 @@ class _EditarState extends State<Editar> {
                 ]
             ),
             
-            body: new Text('Cadastro'),
+            body: new SafeArea(
+                
+                top    : false,
+                bottom : false,
+                
+                child: new Form(
+                    
+                    key          : _formKey,
+                    autovalidate : true,
+                    
+                    child: new ListView(
+                        
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        
+                        children: <Widget>[
+                  
+                            new TextFormField(
+                                autofocus : false,
+                                decoration: const InputDecoration(
+                                    icon      : const Icon(Icons.person),
+                                    hintText  : 'Nome ou Razão Social',
+                                    labelText : 'Nome',
+                                ),
+                            ),
+                        
+                            new TextFormField(
+                                keyboardType    : TextInputType.phone,
+                                inputFormatters : [ WhitelistingTextInputFormatter.digitsOnly],
+                                decoration: const InputDecoration(
+                                    icon      : const Icon(Icons.phone),
+                                    hintText  : '(xx) xxxxx-xxxx',
+                                    labelText : 'Telefone',
+                                ),
+                            ),
+                        
+                            new TextFormField(
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                    icon      : const Icon(Icons.email),
+                                    hintText  : 'contato@cliente.com',
+                                    labelText : 'Email',
+                                ),
+                            ),
+                        
+                            new TextFormField(
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                    icon      : const Icon(Icons.edit_location),
+                                    hintText  : 'Informe a cidade',
+                                    labelText : 'Cidade',
+                                ),
+                            ),
+                        ],
+                    )
+                )
+            ),
         );
     }
 }
