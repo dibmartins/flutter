@@ -1,10 +1,10 @@
 class Cliente {
     
-    int _id;
+    int _id_cliente;
     String _nome;
     String _email;
  
-    int    get id    => _id;
+    int    get id    => _id_cliente;
     String get nome  => _nome;
     String get email => _email;
  
@@ -12,7 +12,7 @@ class Cliente {
  
     Cliente.map(dynamic obj) {
         
-        this._id    = obj['id'];
+        this._id_cliente    = obj['id'];
         this._nome  = obj['nome'];
         this._email = obj['email'];
     }
@@ -21,7 +21,7 @@ class Cliente {
         
         var map = new Map<String, dynamic>();
         
-        if(_id != null) map['id'] = _id; 
+        if(_id_cliente != null) map['id'] = _id_cliente; 
         
         map['nome']  = _nome;
         map['email'] = _email;
@@ -31,15 +31,15 @@ class Cliente {
  
     Cliente.fromMap(Map<String, dynamic> map) {
         
-        this._id    = map['id'];
-        this._nome  = map['nome'];
-        this._email = map['email'];
+        this._id_cliente = map['id'];
+        this._nome       = map['nome'];
+        this._email      = map['email'];
     }
 
     Cliente.fromJson(Map<String, dynamic> json){
         
-        this._id    = json['id'];
-        this._nome  = json['name'];
-        this._email = json['email'];
+        this._id_cliente = json['id'];
+        this._nome       = json['name'];
+        this._email      = json['email'];
     }
 }

@@ -7,6 +7,7 @@ environment:
 
 dependencies:
     sqflite: any
+    path_provider: '>=0.3.0'
     charts_flutter: any
     cupertino_icons: ^0.1.2
     material_search: ^0.2.8

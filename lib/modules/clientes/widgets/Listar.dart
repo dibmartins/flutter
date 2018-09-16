@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_search/material_search.dart';
+import 'package:dio/dio.dart';
 import 'package:forca_vendas/modules/clientes/widgets/Editar.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
-import 'package:dio/dio.dart';
+import 'package:forca_vendas/modules/app/database/DbHelper.dart';
 
 List<Cliente> parseClientes(results) {
 
@@ -20,6 +20,29 @@ Future<List<Cliente>> _load() async {
     
     Response response = await dio.get('https://swapi.co/api/people');
 
+    final DbHelper dbhelper = new DbHelper();
+
+    //dbhelper.drop();
+
+    var client = await dbhelper.db;
+
+    await client.transaction((txn) async {
+    
+        int id1 = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES("Diego Botelho", "22999474887", "dibmartins@gmail.com")');
+        int id2 = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES("Mariana Marra", "2298150790", "marifmarra@gmail.com")');
+        int id3 = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES("Antônio Marra Martins", "22999474887", "antoniomartins@gmail.com")');
+        
+        print("inserted1: $id1");
+        print("inserted2: $id2");
+        print("inserted3: $id3");
+
+    });
+
+    var resultCli = await client.rawQuery("SELECT * FROM clientes;");
+    var resultFor = await client.rawQuery("SELECT * FROM fornecedores;");
+
+    print({"clientes": resultCli, "fornecedores": resultFor});
+    
     return compute(parseClientes, response.data['results']);
 }
 
