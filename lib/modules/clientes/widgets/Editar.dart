@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
+import 'package:forca_vendas/modules/app/database/DbHelper.dart';
+
 
 class Editar extends StatefulWidget {
 
-    final model = new Cliente('Diego', 'dibmartins@gmail.com');
-  
     Editar({Key key}) : super(key: key);
 
     @override
@@ -14,27 +14,53 @@ class Editar extends StatefulWidget {
 
 class _EditarState extends State<Editar> {
 
-    final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+    String nome; 
+    String telefone;
+    String email;
+    String cidade;
+
+    final scaffoldKey = new GlobalKey<ScaffoldState>();
+    final formKey     = new GlobalKey<FormState>();
     
     List<String> _colors = <String> ['', 'red', 'green', 'blue', 'orange'];
     
     String _color = '';
 
-    void _save() {
+    void _save() async {
 
-        AlertDialog alert = new AlertDialog(
-            
-            title   : new Text('Salvando...'),
-            content : new Text(widget.model.nome),
-        );
+        if (this.formKey.currentState.validate()) {
+            formKey.currentState.save(); 
+        }
         
-        showDialog(context: context, child: alert);
+        var cliente  = Cliente(nome,telefone,email);
+        var dbhelper = new DbHelper();
+        var client   = await dbhelper.db;
+
+        await client.transaction((txn) async {
+        
+            int done = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES('
+                     + '"'+ cliente.nome +'", "'
+                     + cliente.telefone +'", "'
+                     + cliente.email +'")');
+        });
+        
+        //dbhelper.saveCliente(cliente);
+        //_showSnackBar("Data saved successfully");
+
+        showDialog(context: context, builder: (BuildContext context){
+            return AlertDialog(
+                title   : new Text('Salvo!'),
+                content : new Text(cliente.nome),
+            );
+        });
     }
 
     @override
     Widget build(BuildContext context) {
 
         return Scaffold(
+            
+            key: scaffoldKey,
             
             appBar: AppBar(
                 title: new Text('Novo cliente'),
@@ -54,7 +80,7 @@ class _EditarState extends State<Editar> {
                 
                 child: new Form(
                     
-                    key          : _formKey,
+                    key          : formKey,
                     autovalidate : true,
                     
                     child: new ListView(
@@ -70,6 +96,7 @@ class _EditarState extends State<Editar> {
                                     hintText  : 'Nome ou Razão Social',
                                     labelText : 'Nome',
                                 ),
+                                onSaved : (val) => this.nome = val,
                             ),
                         
                             new TextFormField(
@@ -80,6 +107,7 @@ class _EditarState extends State<Editar> {
                                     hintText  : '(xx) xxxxx-xxxx',
                                     labelText : 'Telefone',
                                 ),
+                                onSaved : (val) => this.telefone = val,
                             ),
                         
                             new TextFormField(
@@ -89,6 +117,7 @@ class _EditarState extends State<Editar> {
                                     hintText  : 'contato@cliente.com',
                                     labelText : 'Email',
                                 ),
+                                onSaved   : (val) => this.email = val,
                             ),
                         
                             new TextFormField(
@@ -98,6 +127,7 @@ class _EditarState extends State<Editar> {
                                     hintText  : 'Informe a cidade',
                                     labelText : 'Cidade',
                                 ),
+                                onSaved   : (val) => this.cidade = val,
                             ),
                         ],
                     )

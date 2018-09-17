@@ -48,7 +48,7 @@ Future<List<Cliente>> _load() async {
 
 class Listar extends StatefulWidget {
 
-    final model = new Cliente('Diego', 'dibmartins@gmail.com');
+    final model = new Cliente('Diego', '22999474887', 'dibmartins@gmail.com');
   
     Listar({Key key}) : super(key: key);
 
