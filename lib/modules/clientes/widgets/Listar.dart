@@ -16,34 +16,25 @@ List<Cliente> parseClientes(results) {
 
 Future<List<Cliente>> _load() async {
 
-    Dio dio = new Dio();
-    
-    Response response = await dio.get('https://swapi.co/api/people');
-
     final DbHelper dbhelper = new DbHelper();
 
     //dbhelper.drop();
 
-    var client = await dbhelper.db;
-
-    await client.transaction((txn) async {
+    var dbClient = await dbhelper.db;
     
-        int id1 = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES("Diego Botelho", "22999474887", "dibmartins@gmail.com")');
-        int id2 = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES("Mariana Marra", "2298150790", "marifmarra@gmail.com")');
-        int id3 = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES("Antônio Marra Martins", "22999474887", "antoniomartins@gmail.com")');
+    List<Map> list = await dbClient.rawQuery('SELECT DISTINCT * FROM clientes ORDER BY nome');
+    List<Cliente> clientes = new List();
+    
+    for (int i = 0; i < list.length; i++) {
         
-        print("inserted1: $id1");
-        print("inserted2: $id2");
-        print("inserted3: $id3");
-
-    });
-
-    var resultCli = await client.rawQuery("SELECT * FROM clientes;");
-    var resultFor = await client.rawQuery("SELECT * FROM fornecedores;");
-
-    print({"clientes": resultCli, "fornecedores": resultFor});
+        clientes.add(new Cliente(
+            list[i]["nome"], 
+            list[i]["telefone"], 
+            list[i]["email"]
+        ));
+    }
     
-    return compute(parseClientes, response.data['results']);
+    return clientes;
 }
 
 class Listar extends StatefulWidget {
