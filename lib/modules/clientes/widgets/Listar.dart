@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_search/material_search.dart';
-import 'package:dio/dio.dart';
 import 'package:forca_vendas/modules/clientes/widgets/Editar.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
 import 'package:forca_vendas/modules/app/database/DbHelper.dart';
