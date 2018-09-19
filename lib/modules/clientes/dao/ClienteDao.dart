@@ -18,18 +18,18 @@ class ClienteDao {
     final String telefone    = 'telefone';
     final String email       = 'email';
 
-    Future<int> save(Cliente note) async {
+    Future<int> save(Cliente model) async {
 
         _connection = await database.db;
         
-        return await connection.insert(sourceTable, note.toMap());
+        return await connection.insert(sourceTable, model.toMap());
     }
     
-    Future<int> update(Cliente note) async {
+    Future<int> update(Cliente model) async {
 
         _connection = await database.db;
         
-        return await connection.update(sourceTable, note.toMap(), where: "$idCliente = ?", whereArgs: [note.id]);
+        return await connection.update(sourceTable, model.toMap(), where: "$idCliente = ?", whereArgs: [model.idCliente]);
     }
 
     Future<int> delete(int id) async {
