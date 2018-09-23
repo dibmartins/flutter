@@ -25,11 +25,13 @@ class ClienteDao {
         return await connection.insert(sourceTable, model.toMap());
     }
     
-    Future<int> update(Cliente model) async {
+    Future<Cliente> update(Cliente model) async {
 
         _connection = await database.db;
         
-        return await connection.update(sourceTable, model.toMap(), where: "$idCliente = ?", whereArgs: [model.idCliente]);
+        model.idCliente = await connection.update(sourceTable, model.toMap(), where: "$idCliente = ?", whereArgs: [model.idCliente]);
+
+        return model;
     }
 
     Future<int> delete(int id) async {
@@ -39,13 +41,17 @@ class ClienteDao {
         return await connection.delete(sourceTable, where: '$idCliente = ?', whereArgs: [id]);
     }
     
-    Future<List> fetch(List<String> columns) async {
+    Future<List<Cliente>> fetch(List<String> columns) async {
 
         _connection = await database.db;
+
+        //_connection.drop();
         
         var result = await connection.query(sourceTable, columns: columns);
-    
-        return result.toList();
+
+        final parsed = result.cast<Map<String, dynamic>>();
+
+        return parsed.map<Cliente>((json) => Cliente.fromJson(json)).toList();
     }
     
     Future<Cliente> findFirst(int id, List<String> columns) async {

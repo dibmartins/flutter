@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forca_vendas/modules/clientes/dao/ClienteDao.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
-import 'package:forca_vendas/modules/app/database/DbHelper.dart';
-
 
 class Editar extends StatefulWidget {
 
@@ -19,8 +19,10 @@ class _EditarState extends State<Editar> {
     String email;
     String cidade;
 
+    Cliente cliente;
     final scaffoldKey = new GlobalKey<ScaffoldState>();
     final formKey     = new GlobalKey<FormState>();
+    final focusNode   = FocusNode();
     
     List<String> _colors = <String> ['', 'red', 'green', 'blue', 'orange'];
     
@@ -28,31 +30,44 @@ class _EditarState extends State<Editar> {
 
     void _save() async {
 
-        if (this.formKey.currentState.validate()) {
-            formKey.currentState.save(); 
+        if(this.formKey.currentState.validate()) {
+            
+            formKey.currentState.save();
         }
         
-        var cliente  = Cliente(nome,telefone,email);
-        var dbhelper = new DbHelper();
-        var client   = await dbhelper.db;
+        ClienteDao dao = new ClienteDao();
 
-        await client.transaction((txn) async {
-        
-            int done = await txn.rawInsert('INSERT INTO clientes(nome, telefone, email) VALUES('
-                     + '"'+ cliente.nome +'", "'
-                     + cliente.telefone +'", "'
-                     + cliente.email +'")');
-        });
-        
-        //dbhelper.saveCliente(cliente);
-        //_showSnackBar("Data saved successfully");
+        if(cliente == null){
+            
+            cliente = Cliente(nome,telefone,email);
 
-        showDialog(context: context, builder: (BuildContext context){
-            return AlertDialog(
-                title   : new Text('Salvo!'),
-                content : new Text(cliente.nome),
-            );
-        });
+            dao.save(cliente);
+        }
+        else{
+            
+            cliente = await dao.update(cliente);
+        }
+        
+        scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text('Salvo!'),
+            action: SnackBarAction(
+              label: 'Novo',
+              onPressed: () {
+
+                    formKey.currentState.reset();
+
+                    FocusScope.of(context).requestFocus(focusNode);
+              },
+            ),
+        ));
+    }
+
+    @override
+    void dispose() {
+        
+        focusNode.dispose();
+        
+        super.dispose();
     }
 
     @override
@@ -90,8 +105,9 @@ class _EditarState extends State<Editar> {
                         children: <Widget>[
                   
                             new TextFormField(
-                                autofocus : false,
-                                decoration: const InputDecoration(
+                                autofocus  : true,
+                                focusNode  : focusNode,
+                                decoration : const InputDecoration(
                                     icon      : const Icon(Icons.person),
                                     hintText  : 'Nome ou Razão Social',
                                     labelText : 'Nome',

@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_search/material_search.dart';
 import 'package:forca_vendas/modules/clientes/widgets/Editar.dart';
+import 'package:forca_vendas/modules/clientes/dao/ClienteDao.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
-import 'package:forca_vendas/modules/app/database/DbHelper.dart';
 
 List<Cliente> parseClientes(results) {
 
@@ -15,25 +15,11 @@ List<Cliente> parseClientes(results) {
 
 Future<List<Cliente>> _load() async {
 
-    final DbHelper dbhelper = new DbHelper();
+    ClienteDao dao = new ClienteDao();
 
-    //dbhelper.drop();
+    Future<List<Cliente>> recordset = dao.fetch(['id_cliente', 'nome', 'telefone', 'email']);
 
-    var dbClient = await dbhelper.db;
-    
-    List<Map> list = await dbClient.rawQuery('SELECT DISTINCT * FROM clientes ORDER BY nome');
-    List<Cliente> clientes = new List();
-    
-    for (int i = 0; i < list.length; i++) {
-        
-        clientes.add(new Cliente(
-            list[i]["nome"], 
-            list[i]["telefone"], 
-            list[i]["email"]
-        ));
-    }
-    
-    return clientes;
+    return recordset;
 }
 
 class Listar extends StatefulWidget {
