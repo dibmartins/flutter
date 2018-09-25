@@ -30,7 +30,7 @@ ADDED from /home/diego/development/pipegrid/app/android/app/src/main/AndroidMani
 application
 ADDED from /home/diego/development/pipegrid/app/android/app/src/main/AndroidManifest.xml:15:5-38:19
 	android:label
-		ADDED from /home/diego/development/pipegrid/app/android/app/src/main/AndroidManifest.xml:17:9-28
+		ADDED from /home/diego/development/pipegrid/app/android/app/src/main/AndroidManifest.xml:17:9-40
 	android:icon
 		ADDED from /home/diego/development/pipegrid/app/android/app/src/main/AndroidManifest.xml:18:9-43
 	android:name
