@@ -5,7 +5,7 @@ class Cliente {
     String telefone;
     String email;
  
-    Cliente(this.nome, this.telefone, this.email);
+    Cliente({this.nome, this.telefone, this.email});
  
     Cliente.map(dynamic obj) {
         

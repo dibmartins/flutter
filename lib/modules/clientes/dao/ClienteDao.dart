@@ -14,7 +14,7 @@ class ClienteDao {
     
     final String sourceTable = 'clientes';
     final String idCliente   = 'id_cliente';
-    final String nome        = 'title';
+    final String nome        = 'nome';
     final String telefone    = 'telefone';
     final String email       = 'email';
 

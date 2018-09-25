@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_search/material_search.dart';
 import 'package:forca_vendas/modules/clientes/widgets/Editar.dart';
 import 'package:forca_vendas/modules/clientes/dao/ClienteDao.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
@@ -24,8 +23,6 @@ Future<List<Cliente>> _load() async {
 
 class Listar extends StatefulWidget {
 
-    final model = new Cliente('Diego', '22999474887', 'dibmartins@gmail.com');
-  
     Listar({Key key}) : super(key: key);
 
     @override
@@ -33,72 +30,6 @@ class Listar extends StatefulWidget {
 }
 
 class _ListarState extends State<Listar> {
-
-    final _names =  [
-        'Igor Minar',
-        'Brad Green',
-        'Dave Geddes',
-        'Naomi Black',
-        'Greg Weber',
-        'Dean Sofer',
-        'Wes Alvaro',
-        'John Scott',
-        'Daniel Nadasi',
-    ];
-
-    String _name = 'No one';
-
-    final _formKey = new GlobalKey<FormState>();
-
-    _buildMaterialSearchPage(BuildContext context) {
-
-        return new MaterialPageRoute<String>(
-            
-            settings: new RouteSettings(
-                name           : 'material_search',
-                isInitialRoute : false,
-            ),
-            
-            builder: (BuildContext context) {
-                
-                return new Material(
-                    
-                    child: new MaterialSearch<String>(
-                        
-                        placeholder: 'Pesquisa',
-                        
-                        results: _names.map((String v) => new MaterialSearchResult<String>(
-                            icon: Icons.person,
-                            value: v,
-                            text: "Mr(s). $v",
-                        )).toList(),
-                        
-                        filter: (dynamic value, String criteria) {
-                            
-                            return value.toLowerCase().trim()
-                                .contains(new RegExp(r'' + criteria.toLowerCase().trim() + ''));
-                        },
-                        
-                        onSelect: (dynamic value) => Navigator.of(context).pop(value),
-                        onSubmit: (String value) => Navigator.of(context).pop(value),
-                    ),
-                );
-            }
-        );
-    }    
-
-    _showMaterialSearch(BuildContext context) {
-        Navigator.of(context)
-        .push(_buildMaterialSearchPage(context))
-        .then((dynamic value) {
-            setState(() => _name = value as String);
-        });
-    }
-
-    void _add() {
-
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Editar()));
-    }
 
     var items;
   
@@ -113,7 +44,6 @@ class _ListarState extends State<Listar> {
                 actions: <Widget>[
                     new IconButton(
                         onPressed: () {
-                            _showMaterialSearch(context);
                         },
                         tooltip: 'Pesquisar',
                         icon: new Icon(Icons.search),
@@ -147,6 +77,11 @@ class _ListarState extends State<Listar> {
             )
         );
     }
+
+    void _add() {
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: new Cliente())));
+    }
 }
 
 class ClienteList extends StatelessWidget {
@@ -168,6 +103,7 @@ class ClienteList extends StatelessWidget {
                     leading  : new CircleAvatar(child: new Text(clientes[index].nome[0])),
                     title    : Text(clientes[index].nome),
                     subtitle : Text((clientes[index].email != null) ? clientes[index].email : ''),
+                    onTap    : () => Navigator.push(context,MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index]))),
                 );
             },
         );
