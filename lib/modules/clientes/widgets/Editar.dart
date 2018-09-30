@@ -3,11 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:forca_vendas/modules/clientes/dao/ClienteDao.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
 
-class Editar extends StatelessWidget {
-
+class Editar extends StatefulWidget {
+    
     final Cliente cliente;
 
     Editar({Key key, @required this.cliente}) : super(key: key);
+  
+    @override
+    State<StatefulWidget> createState() => new EditarState();
+}
+
+class EditarState extends State<Editar> {
 
     final scaffoldKey = new GlobalKey<ScaffoldState>();
     final formKey     = new GlobalKey<FormState>();
@@ -21,7 +27,7 @@ class Editar extends StatelessWidget {
             key: scaffoldKey,
             
             appBar: AppBar(
-                title: new Text((cliente.idCliente == null) ? 'Novo Cliente' : 'Editar Cliente'),
+                title: new Text((widget.cliente.idCliente == null) ? 'Novo Cliente' : 'Editar Cliente'),
                 actions: <Widget>[
 
                     IconButton(
@@ -48,38 +54,36 @@ class Editar extends StatelessWidget {
                         children: <Widget>[
                   
                             new TextFormField(
-                                autofocus    : true,
-                                focusNode    : focusNode,
-                                initialValue : cliente.nome,
+                                initialValue : widget.cliente.nome,
                                 decoration : const InputDecoration(
                                     icon      : const Icon(Icons.person),
                                     hintText  : 'Nome ou Razão Social',
                                     labelText : 'Nome',
                                 ),
-                                onSaved : (val) => cliente.nome = val,
+                                onSaved : (val) => widget.cliente.nome = val,
                             ),
                         
                             new TextFormField(
                                 keyboardType    : TextInputType.phone,
                                 inputFormatters : [ WhitelistingTextInputFormatter.digitsOnly],
-                                initialValue    : cliente.telefone,
+                                initialValue    : widget.cliente.telefone,
                                 decoration: const InputDecoration(
                                     icon      : const Icon(Icons.phone),
                                     hintText  : '(xx) xxxxx-xxxx',
                                     labelText : 'Telefone',
                                 ),
-                                onSaved : (val) => cliente.telefone = val,
+                                onSaved : (val) => widget.cliente.telefone = val,
                             ),
                         
                             new TextFormField(
                                 keyboardType: TextInputType.emailAddress,
-                                initialValue    : cliente.email,
+                                initialValue    : widget.cliente.email,
                                 decoration: const InputDecoration(
                                     icon      : const Icon(Icons.email),
                                     hintText  : 'contato@cliente.com',
                                     labelText : 'Email',
                                 ),
-                                onSaved   : (val) => cliente.email = val,
+                                onSaved   : (val) => widget.cliente.email = val,
                             )
                         ],
                     )
@@ -97,13 +101,13 @@ class Editar extends StatelessWidget {
         
         ClienteDao dao = new ClienteDao();
 
-        if(cliente == null){
+        if(widget.cliente.idCliente == null){
             
-            dao.save(cliente);
+            dao.save(widget.cliente);
         }
         else{
             
-            await dao.update(cliente);
+            await dao.update(widget.cliente);
         }
         
         scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -113,8 +117,6 @@ class Editar extends StatelessWidget {
               onPressed: () {
 
                     formKey.currentState.reset();
-
-                    //FocusScope.of(context).requestFocus(focusNode);
               },
             ),
         ));

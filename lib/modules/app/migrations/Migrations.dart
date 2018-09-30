@@ -2,13 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 class Migrations{
 
-    static Database _db;
-    static int _version;
-
     void onCreate(Database db, int version) async {
-
-        _db      = db;
-        _version = version;
 
         print('Criando banco de dados');
         
