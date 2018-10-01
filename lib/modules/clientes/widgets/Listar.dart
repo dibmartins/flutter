@@ -17,11 +17,18 @@ class _ListarState extends State<Listar> {
 
     final List<int> selected = new List();
 
-    void selecionar(int index) {
+    void toogleSelected(int index) {
         
         setState(() {
             
-            if(!selected.contains(index)) selected.add(index);
+            if(selected.contains(index)){
+                
+                selected.remove(index);
+            
+            }else{
+                
+                selected.add(index);
+            }
         });
     }
     
@@ -29,7 +36,7 @@ class _ListarState extends State<Listar> {
     Widget build(BuildContext context) {
 
         String title = (selected.length > 0) ? selected.length.toString() : 'Clientes';
-        Color bgColor = (selected.length > 0) ? Colors.black26 : Theme.of(context).accentColor;
+        Color bgColor = (selected.length > 0) ? Colors.green : Theme.of(context).accentColor;
 
         List<Widget> actions = [
             new IconButton(
@@ -71,7 +78,7 @@ class _ListarState extends State<Listar> {
                         case ConnectionState.done:
                             if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
 
-                            return ClienteList(clientes: snapshot.data, selected: selected, longPressCallback: selecionar);
+                            return ClienteList(clientes: snapshot.data, selected: selected, longPressCallback: toogleSelected);
                     }
                     
                     return null;
@@ -129,7 +136,17 @@ class ClienteList extends StatelessWidget {
                     leading     : leading,
                     title       : Text(clientes[index].nome),
                     subtitle    : Text((clientes[index].email != null) ? clientes[index].email : ''),
-                    onTap       : () => Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index]))),
+                    onTap       : (){
+                        
+                        if(selected.length > 0){
+                            
+                            onLongPress(index);
+                        }
+                        else{
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index])));
+                        }
+                    },
                     onLongPress : (){
 
                         onLongPress(index);
