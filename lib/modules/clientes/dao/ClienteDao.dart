@@ -40,6 +40,13 @@ class ClienteDao {
         
         return await connection.delete(sourceTable, where: '$idCliente = ?', whereArgs: [id]);
     }
+
+    Future<int> bulkDelete(List ids) async {
+
+        _connection = await database.db;
+        
+        return await connection.delete(sourceTable, where: '$idCliente IN (?)', whereArgs: [ids.join(',')]);
+    }
     
     Future<List<Cliente>> fetch(List<String> columns) async {
 

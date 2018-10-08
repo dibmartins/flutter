@@ -17,19 +17,19 @@ class _ListarState extends State<Listar> {
 
     final List<int> selected = new List();
 
-    void toogleSelected(int index) {
+    void toogleSelected(int idCliente) {
         
         setState(() {
             
-            if(selected.contains(index)){
+            if(selected.contains(idCliente)){
                 
-                selected.remove(index);
+                selected.remove(idCliente);
             
             }else{
                 
-                selected.add(index);
+                selected.add(idCliente);
             }
-        });
+        });        
     }
     
     @override
@@ -42,6 +42,7 @@ class _ListarState extends State<Listar> {
             new IconButton(
                 
                 onPressed: () {
+
                 },
                 tooltip: 'Pesquisar',
                 icon: new Icon(Icons.search),
@@ -52,6 +53,8 @@ class _ListarState extends State<Listar> {
             new IconButton(
                 
                 onPressed: () {
+
+                    _delete();
                 },
                 tooltip: 'Remover',
                 icon: new Icon(Icons.delete),
@@ -71,11 +74,12 @@ class _ListarState extends State<Listar> {
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
 
                     switch (snapshot.connectionState) {
-                        case ConnectionState.none: return new Text('Press button to start.');
+                        case ConnectionState.none:
                         case ConnectionState.active:
                         case ConnectionState.waiting:
                             return Center(child: CircularProgressIndicator());
                         case ConnectionState.done:
+                            
                             if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
 
                             return ClienteList(clientes: snapshot.data, selected: selected, longPressCallback: toogleSelected);
@@ -99,6 +103,13 @@ class _ListarState extends State<Listar> {
 
         return dao.fetch(['id_cliente', 'nome', 'telefone', 'email']);
     }
+
+    Future<int> _delete() async {
+
+        ClienteDao dao = new ClienteDao();
+
+        return await dao.bulkDelete(selected);
+    }
 }
 
 class ClienteList extends StatelessWidget {
@@ -110,9 +121,9 @@ class ClienteList extends StatelessWidget {
 
     ClienteList({Key key, this.clientes, this.selected, this.longPressCallback}) : super(key: key);
 
-    void onLongPress(int index) {
+    void onLongPress(int idCliente) {
 
-        this.longPressCallback(index);
+        this.longPressCallback(idCliente);
     }
 
     @override
@@ -123,7 +134,7 @@ class ClienteList extends StatelessWidget {
             itemCount   : clientes.length,
             itemBuilder : (context, index) {
 
-                CircleAvatar leading = (selected.contains(index)) ? 
+                CircleAvatar leading = (selected.contains(clientes[index].idCliente)) ? 
                     new CircleAvatar(
                         child: new Icon(Icons.check),
                         backgroundColor: Colors.green,
@@ -131,26 +142,32 @@ class ClienteList extends StatelessWidget {
                     ) : 
                     new CircleAvatar(child: new Text(clientes[index].nome[0]));
 
-                return ListTile(
-                    
-                    leading     : leading,
-                    title       : Text(clientes[index].nome),
-                    subtitle    : Text((clientes[index].email != null) ? clientes[index].email : ''),
-                    onTap       : (){
-                        
-                        if(selected.length > 0){
+                return new Column(
+                    children: <Widget>[
+                        ListTile(
                             
-                            onLongPress(index);
-                        }
-                        else{
+                            leading     : leading,
+                            title       : Text(clientes[index].nome),
+                            subtitle    : Text((clientes[index].email != null) ? clientes[index].email : ''),
+                            onTap       : (){
+                                
+                                if(selected.length > 0){
+                                    
+                                    onLongPress(clientes[index].idCliente);
+                                }
+                                else{
 
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index])));
-                        }
-                    },
-                    onLongPress : (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index])));
+                                }
+                            },
+                            onLongPress : (){
 
-                        onLongPress(index);
-                    }
+                                onLongPress(clientes[index].idCliente);
+                            }
+                        ),
+
+                        new Divider(height: 2.0)
+                    ]
                 );
             },
         );

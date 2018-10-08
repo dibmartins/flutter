@@ -11,6 +11,9 @@ class App extends StatelessWidget {
             title : 'Força de Vendas',
             theme : new ThemeData(primarySwatch: Colors.blue),
             home  : new Home(),
+            
+            debugShowCheckedModeBanner: false
+        
         );
     }
 }
