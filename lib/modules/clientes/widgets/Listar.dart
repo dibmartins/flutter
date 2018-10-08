@@ -52,12 +52,9 @@ class _ListarState extends State<Listar> {
         List<Widget> selectedActions = [
             new IconButton(
                 
-                onPressed: () {
-
-                    _delete();
-                },
-                tooltip: 'Remover',
-                icon: new Icon(Icons.delete),
+                onPressed : _delete,
+                tooltip   : 'Remover',
+                icon      : new Icon(Icons.delete),
             )
         ];
 
