@@ -15,6 +15,7 @@ class Listar extends StatefulWidget {
 
 class _ListarState extends State<Listar> {
 
+    List<Cliente> clientes;
     final List<int> selected = new List();
 
     void toogleSelected(int idCliente) {
@@ -22,7 +23,7 @@ class _ListarState extends State<Listar> {
         setState(() {
             
             if(selected.contains(idCliente)){
-                
+
                 selected.remove(idCliente);
             
             }else{
@@ -79,7 +80,9 @@ class _ListarState extends State<Listar> {
                             
                             if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
 
-                            return ClienteList(clientes: snapshot.data, selected: selected, longPressCallback: toogleSelected);
+                            clientes = snapshot.data;
+
+                            return ClienteList(clientes: clientes, selected: selected, longPressCallback: toogleSelected);
                     }
                     
                     return null;
@@ -105,7 +108,20 @@ class _ListarState extends State<Listar> {
 
         ClienteDao dao = new ClienteDao();
 
-        return await dao.bulkDelete(selected);
+        int result = await dao.bulkDelete(selected);
+
+        setState(() {
+            
+            selected.forEach((id){
+                
+                clientes.removeWhere((item) => item.idCliente == id);
+                
+            });        
+            
+            selected.clear();
+        });
+
+        return result;        
     }
 }
 

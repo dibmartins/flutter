@@ -113,11 +113,11 @@ class EditarState extends State<Editar> {
         scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text('Salvo!'),
             action: SnackBarAction(
-              label: 'Novo',
-              onPressed: () {
+                label: 'Novo',
+                onPressed: () {
 
                     formKey.currentState.reset();
-              },
+                },
             ),
         ));
     }
