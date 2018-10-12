@@ -103,7 +103,7 @@ class EditarState extends State<Editar> {
 
         if(widget.cliente.idCliente == null){
             
-            dao.save(widget.cliente);
+            widget.cliente.idCliente = await dao.save(widget.cliente);
         }
         else{
             
