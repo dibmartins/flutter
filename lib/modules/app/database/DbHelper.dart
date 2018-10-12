@@ -27,6 +27,9 @@ class DbHelper {
     }
 
     open() async {
+
+        /* !! Desabilitar em produção !! */
+        Sqflite.devSetDebugModeOn(true);
         
         String path = await getPath();
 

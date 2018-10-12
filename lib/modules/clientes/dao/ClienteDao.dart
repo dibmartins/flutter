@@ -13,10 +13,6 @@ class ClienteDao {
     Database get connection => _connection;
     
     final String sourceTable = 'clientes';
-    final String idCliente   = 'id_cliente';
-    final String nome        = 'nome';
-    final String telefone    = 'telefone';
-    final String email       = 'email';
 
     Future<int> save(Cliente model) async {
 
@@ -29,7 +25,7 @@ class ClienteDao {
 
         _connection = await database.db;
         
-        model.idCliente = await connection.update(sourceTable, model.toMap(), where: "$idCliente = ?", whereArgs: [model.idCliente]);
+        model.idCliente = await connection.update(sourceTable, model.toMap(), where: "id_cliente = ?", whereArgs: [model.idCliente]);
 
         return model;
     }
@@ -38,14 +34,14 @@ class ClienteDao {
 
         _connection = await database.db;
         
-        return await connection.delete(sourceTable, where: '$idCliente = ?', whereArgs: [id]);
+        return await connection.delete(sourceTable, where: 'id_cliente = ?', whereArgs: [id]);
     }
 
     Future<int> bulkDelete(List ids) async {
 
         _connection = await database.db;
-        
-        return await connection.delete(sourceTable, where: '$idCliente IN (?)', whereArgs: [ids.join(',')]);
+
+        return await connection.delete(sourceTable, where: "id_cliente IN (${ids.join(', ')})");
     }
     
     Future<List<Cliente>> fetch(List<String> columns) async {
@@ -68,7 +64,7 @@ class ClienteDao {
         List<Map> result = await connection.query(
             sourceTable,
             columns: columns,
-            where: '$idCliente = ?',
+            where: 'id_cliente = ?',
             whereArgs: [id]
         );
     

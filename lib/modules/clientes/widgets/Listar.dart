@@ -18,21 +18,6 @@ class _ListarState extends State<Listar> {
     List<Cliente> clientes;
     final List<int> selected = new List();
 
-    void toogleSelected(int idCliente) {
-        
-        setState(() {
-            
-            if(selected.contains(idCliente)){
-
-                selected.remove(idCliente);
-            
-            }else{
-                
-                selected.add(idCliente);
-            }
-        });        
-    }
-    
     @override
     Widget build(BuildContext context) {
 
@@ -97,6 +82,21 @@ class _ListarState extends State<Listar> {
         );
     }
 
+    void toogleSelected(int idCliente) {
+        
+        setState(() {
+            
+            if(selected.contains(idCliente)){
+
+                selected.remove(idCliente);
+            
+            }else{
+                
+                selected.add(idCliente);
+            }
+        });        
+    }
+
     Future<List<Cliente>> _load() async {
 
         ClienteDao dao = new ClienteDao();
@@ -112,16 +112,12 @@ class _ListarState extends State<Listar> {
 
         setState(() {
             
-            selected.forEach((id){
-                
-                clientes.removeWhere((item) => item.idCliente == id);
-                
-            });        
-            
+            selected.forEach((id) => clientes.removeWhere((item) => item.idCliente == id));
+
             selected.clear();
         });
 
-        return result;        
+        return result;
     }
 }
 
