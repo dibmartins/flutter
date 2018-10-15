@@ -13,10 +13,13 @@ class Listar extends StatefulWidget {
     _ListarState createState() => new _ListarState();
 }
 
-class _ListarState extends State<Listar> {
+class _ListarState extends State<Listar>  with RouteAware{
 
+
+    final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     List<Cliente> clientes;
     final List<int> selected = new List();
+    Future _loader;
 
     @override
     Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class _ListarState extends State<Listar> {
             ),
 
             body: FutureBuilder<List<Cliente>>(
-                future: _load(),
+                future: _loader,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
 
                     switch (snapshot.connectionState) {
@@ -67,7 +70,7 @@ class _ListarState extends State<Listar> {
 
                             clientes = snapshot.data;
 
-                            return ClienteList(clientes: clientes, selected: selected, longPressCallback: toogleSelected);
+                            return ClienteList(clientes: clientes, selected: selected, longPressCallback: toogleSelected, changeCallback: refresh);
                     }
                     
                     return null;
@@ -82,6 +85,41 @@ class _ListarState extends State<Listar> {
         );
     }
 
+    @override
+    void didChangeDependencies() {
+        
+        super.didChangeDependencies();
+        
+        routeObserver.subscribe(this, ModalRoute.of(context));
+    }
+
+    @override
+    void dispose() {
+        
+        routeObserver.unsubscribe(this);
+        
+        super.dispose();
+    }
+
+    @override
+    void didPush() {
+        
+        print('push');
+    }
+
+    @override
+    void didPop() {
+        
+        print('pop');
+    }
+
+    initState() {
+        
+        super.initState();
+        
+        _loader = _load();
+    }
+
     void toogleSelected(int idCliente) {
         
         setState(() {
@@ -94,6 +132,13 @@ class _ListarState extends State<Listar> {
                 
                 selected.add(idCliente);
             }
+        });        
+    }
+
+    void refresh() {
+        
+        setState(() {
+            _load();
         });        
     }
 
@@ -127,12 +172,18 @@ class ClienteList extends StatelessWidget {
 
     final List<int> selected;
     final longPressCallback;
+    final changeCallback;
 
-    ClienteList({Key key, this.clientes, this.selected, this.longPressCallback}) : super(key: key);
+    ClienteList({Key key, this.clientes, this.selected, this.longPressCallback, this.changeCallback}) : super(key: key);
 
     void onLongPress(int idCliente) {
 
         this.longPressCallback(idCliente);
+    }
+
+    void onChangeCallback() {
+
+        this.changeCallback();
     }
 
     @override
@@ -158,7 +209,7 @@ class ClienteList extends StatelessWidget {
                             leading     : leading,
                             title       : Text(clientes[index].nome),
                             subtitle    : Text((clientes[index].email != null) ? clientes[index].email : ''),
-                            onTap       : (){
+                            onTap       : () async {
                                 
                                 if(selected.length > 0){
                                     
@@ -166,7 +217,9 @@ class ClienteList extends StatelessWidget {
                                 }
                                 else{
 
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index])));
+                                    Cliente cliente = await Navigator.push(context, MaterialPageRoute(builder: (context) => Editar(cliente: clientes[index])));
+
+                                    onChangeCallback();
                                 }
                             },
                             onLongPress : (){

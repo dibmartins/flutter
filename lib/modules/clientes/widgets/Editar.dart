@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forca_vendas/modules/clientes/dao/ClienteDao.dart';
 import 'package:forca_vendas/modules/clientes/models/Cliente.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class Editar extends StatefulWidget {
     
@@ -18,6 +19,8 @@ class EditarState extends State<Editar> {
     final scaffoldKey = new GlobalKey<ScaffoldState>();
     final formKey     = new GlobalKey<FormState>();
     final focusNode   = FocusNode();
+
+    var telefoneController = new MaskedTextController(mask: '(00) 00000-0000');
     
     @override
     Widget build(BuildContext context) {
@@ -60,10 +63,12 @@ class EditarState extends State<Editar> {
                                     hintText  : 'Nome ou Razão Social',
                                     labelText : 'Nome',
                                 ),
+                                validator: (val) => val.isEmpty ? 'Obrigatório' : null,
                                 onSaved : (val) => widget.cliente.nome = val,
                             ),
                         
                             new TextFormField(
+                                controller      : telefoneController,
                                 keyboardType    : TextInputType.phone,
                                 inputFormatters : [ WhitelistingTextInputFormatter.digitsOnly],
                                 initialValue    : widget.cliente.telefone,
@@ -80,9 +85,10 @@ class EditarState extends State<Editar> {
                                 initialValue    : widget.cliente.email,
                                 decoration: const InputDecoration(
                                     icon      : const Icon(Icons.email),
-                                    hintText  : 'contato@cliente.com',
+                                    hintText  : 'voce@exemplo.com',
                                     labelText : 'Email',
                                 ),
+                                validator : (val) => validateEmail(val),
                                 onSaved   : (val) => widget.cliente.email = val,
                             )
                         ],
@@ -90,6 +96,16 @@ class EditarState extends State<Editar> {
                 )
             ),
         );
+    }
+
+    String validateEmail(String value) {
+        Pattern pattern =
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        RegExp regex = new RegExp(pattern);
+        if (!regex.hasMatch(value))
+        return 'Inválido';
+        else
+        return null;
     }
 
     void _save() async {
@@ -112,6 +128,8 @@ class EditarState extends State<Editar> {
         
         scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text('Salvo!'),
+
+
             action: SnackBarAction(
                 label: 'Novo',
                 onPressed: () {

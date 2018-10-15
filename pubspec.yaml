@@ -7,11 +7,12 @@ environment:
 
 dependencies:
     sqflite: any
+    dio: ^1.0.3
     path_provider: '>=0.3.0'
     charts_flutter: any
     cupertino_icons: ^0.1.2
     material_search: ^0.2.8
-    dio: ^1.0.3
+    flutter_masked_text: ^0.6.0
     flutter:
         sdk: flutter
 
