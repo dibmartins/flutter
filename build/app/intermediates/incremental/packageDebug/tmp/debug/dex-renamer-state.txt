@@ -1,4 +1,4 @@
-#Mon Oct 15 06:39:56 BRT 2018
+#Tue Oct 16 07:45:23 BRT 2018
 base.0=/home/diego/development/pipegrid/app/build/app/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

@@ -57,7 +57,7 @@ class EditarState extends State<Editar> {
                         children: <Widget>[
                   
                             new TextFormField(
-                                initialValue : widget.cliente.nome,
+                                initialValue : widget.cliente.nome ?? '',
                                 decoration : const InputDecoration(
                                     icon      : const Icon(Icons.person),
                                     hintText  : 'Nome ou Razão Social',
@@ -71,7 +71,6 @@ class EditarState extends State<Editar> {
                                 controller      : telefoneController,
                                 keyboardType    : TextInputType.phone,
                                 inputFormatters : [ WhitelistingTextInputFormatter.digitsOnly],
-                                initialValue    : widget.cliente.telefone,
                                 decoration: const InputDecoration(
                                     icon      : const Icon(Icons.phone),
                                     hintText  : '(xx) xxxxx-xxxx',
@@ -82,7 +81,7 @@ class EditarState extends State<Editar> {
                         
                             new TextFormField(
                                 keyboardType: TextInputType.emailAddress,
-                                initialValue    : widget.cliente.email,
+                                initialValue    : widget.cliente.email ?? '',
                                 decoration: const InputDecoration(
                                     icon      : const Icon(Icons.email),
                                     hintText  : 'voce@exemplo.com',
@@ -99,13 +98,15 @@ class EditarState extends State<Editar> {
     }
 
     String validateEmail(String value) {
-        Pattern pattern =
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+        if(value.isEmpty) return '';
+
+        Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        
         RegExp regex = new RegExp(pattern);
-        if (!regex.hasMatch(value))
-        return 'Inválido';
-        else
-        return null;
+        
+        if(!regex.hasMatch(value)) return 'Inválido';
+        else return null;
     }
 
     void _save() async {

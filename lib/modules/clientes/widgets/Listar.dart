@@ -13,7 +13,7 @@ class Listar extends StatefulWidget {
     _ListarState createState() => new _ListarState();
 }
 
-class _ListarState extends State<Listar>  with RouteAware{
+class _ListarState extends State<Listar> with RouteAware{
 
 
     final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -28,29 +28,29 @@ class _ListarState extends State<Listar>  with RouteAware{
         Color bgColor = (selected.length > 0) ? Colors.green : Theme.of(context).accentColor;
 
         List<Widget> actions = [
-            new IconButton(
+            IconButton(
                 
                 onPressed: () {
 
                 },
                 tooltip: 'Pesquisar',
-                icon: new Icon(Icons.search),
+                icon: Icon(Icons.search),
             )
         ];
 
         List<Widget> selectedActions = [
-            new IconButton(
+            IconButton(
                 
                 onPressed : _delete,
                 tooltip   : 'Remover',
-                icon      : new Icon(Icons.delete),
+                icon      : Icon(Icons.delete),
             )
         ];
 
         return Scaffold(
-            appBar: new AppBar(
+            appBar: AppBar(
                 
-                title           : new Text(title),
+                title           : Text(title),
                 backgroundColor : bgColor,
                 actions         : (selected.length > 0) ? selectedActions : actions,
             ),
@@ -66,7 +66,7 @@ class _ListarState extends State<Listar>  with RouteAware{
                             return Center(child: CircularProgressIndicator());
                         case ConnectionState.done:
                             
-                            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+                            if (snapshot.hasError) return new Text('Erro: ${snapshot.error}');
 
                             clientes = snapshot.data;
 

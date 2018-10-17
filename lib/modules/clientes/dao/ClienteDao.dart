@@ -50,7 +50,7 @@ class ClienteDao {
 
         //_connection.drop();
         
-        var result = await connection.query(sourceTable, columns: columns);
+        var result = await connection.query(sourceTable, columns: columns, orderBy: 'nome');
 
         final parsed = result.cast<Map<String, dynamic>>();
 
